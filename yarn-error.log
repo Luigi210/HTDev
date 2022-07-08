@@ -1,0 +1,39 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\akhme\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js add куфсе
+
+PATH: 
+  C:\Program Files\AdoptOpenJDK\jre-11.0.7.10-hotspot\bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Users\akhme\AppData\Local\Programs\Python\Python39\Scripts\;C:\Users\akhme\AppData\Local\Programs\Python\Python39\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\dotnet\;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files (x86)\dotnet\;C:\ProgramData\chocolatey\bin;C:\Program Files\Git\cmd;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;Q:\PHP;C:\ProgramData\ComposerSetup\bin;C:\Program Files\nodejs\;C:\mingw\mingw64tdm\mingw64tdm\bin;C:\Users\akhme\AppData\Local\Programs\Microsoft VS Code\bin;C:\Program Files\JetBrains\PyCharm Community Edition 2020.2.3\bin;C:\Program Files\JetBrains\WebStorm 2020.2.3\bin;C:\Program Files\JetBrains\PhpStorm 2020.2.3\bin;Q:\c#\JetBrains Rider 2020.2.4\bin;C:\mingw\mingw64tdm\mingw64tdm\bin;C:\Users\akhme\.dotnet\tools;Q:\PyCharm 2021.1\bin;Q:\IntelliJ IDEA Community Edition 2021.3.2\bin;C:\Users\akhme\AppData\Roaming\Composer\vendor\bin;Q:\xampp\mysql\bin\;C:\Users\akhme\AppData\Local\Programs\Fiddler;C:\Users\akhme\AppData\Roaming\npm
+
+Yarn version: 
+  1.22.17
+
+Node version: 
+  16.15.0
+
+Platform: 
+  win32 x64
+
+Trace: 
+  TypeError [ERR_UNESCAPED_CHARACTERS]: https://registry.npmjs.org/куфсе: Request path contains unescaped characters
+      at new NodeError (node:internal/errors:372:5)
+      at new ClientRequest (node:_http_client:160:13)
+      at Object.request (node:https:353:10)
+      at Request.module.exports.Request.start (C:\Users\akhme\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141445:32)
+      at Request.module.exports.Request.end (C:\Users\akhme\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:142204:10)
+      at end (C:\Users\akhme\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141258:14)
+      at Immediate.<anonymous> (C:\Users\akhme\AppData\Roaming\npm\node_modules\yarn\lib\cli.js:141272:7)
+      at processImmediate (node:internal/timers:466:21)
+
+npm manifest: 
+  {
+    "name": "htdev",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT"
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
