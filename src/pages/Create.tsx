@@ -15,21 +15,17 @@ import {
     Select,
     Button
 } from '@chakra-ui/react';
+import {connect} from "react-redux";
 import { API } from "../utils/const";
-import { INote, ICountryTime } from "../types/types";
+import { INote, ICountryTime, ITimeZone } from "../types/types";
 
-const Create = () => {
+const Create = (props) => {
 
     const [timeZones, setTimeZones] = useState([]);
 
-    const [time, setTime] = useState<INote>({
-        text: "",
-        sign: "",
-        tz: "",
-    });
-
     const [countryObject, setCountryObject] = useState<ICountryTime>();
 
+    console.log("Props", props);
 
     async function getTimeZone(){
 
@@ -41,7 +37,7 @@ const Create = () => {
 
     async function getTimeZoneObject(){
 
-        const res = await fetch(API + '/' + time.tz);
+        const res = await fetch(API + '/' + props.data.tz);
         const dataJson = await res.json();
 
         setCountryObject(dataJson);
@@ -54,32 +50,38 @@ const Create = () => {
 
     useEffect(() => {
 
-        if (time.tz.length !== 0) {
+        if (props.data.tz !== '') {
             getTimeZoneObject();
             
         }
-    }, [time.tz]);
+
+    }, [props.data.tz]);
 
     useEffect(() => {
 
         if(countryObject){
-            setTime({...time, date: countryObject!});
+            console.log(countryObject);
+            props.setTime({data: {...props.data, date: countryObject!}});
         }
     }, [countryObject]);
 
-
     const handleChange = (e: ChangeEvent<HTMLTextAreaElement| HTMLInputElement | HTMLSelectElement>) => {
-
-        setTime(
+        props.setTime(
             {
-                ...time,
-                [e.target.name]: e.target.value
+                data: {
+                    ...props.data, 
+                    [e.target.name]: e.target.value
+                }
             }
         );
+    };
+
+    const submitSign = () => {
 
     }
 
-    console.log(time, countryObject);
+
+    // console.log(time, countryObject);
 
     return (
         <Flex flexDir={"column"} gap={"25px"}>
@@ -127,4 +129,26 @@ const Create = () => {
     );
 }
 
-export default Create;
+
+function mapStateToProps(state: ITimeZone){
+    
+
+    return {
+        data: {
+            tz: state.data.tz,
+            text: state.data.text,
+            sign: state.data.sign,
+            date: state.data.date
+        }
+    }
+}
+
+
+
+function mapDispatchToProps(dispatch){
+    return {
+        setTime: (state: ITimeZone) => dispatch({type: 'SET', value: state}),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Create);

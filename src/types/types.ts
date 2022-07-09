@@ -24,3 +24,9 @@ export interface ICountryTime {
     utc_offset: string,
     week_number: number
 }
+
+
+
+export interface ITimeZone {
+    data: INote
+}
