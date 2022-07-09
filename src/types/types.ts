@@ -28,7 +28,8 @@ export interface ICountryTime {
 
 
 export interface ITimeZone {
-    data: INote
+    data: INote,
+    list: INote[]
 }
 
 
@@ -36,10 +37,18 @@ export interface IProps {
     data: INote,
     setTime: (timeZonse: ITimeZone) => void;
     setList: (list: INote) => void;
+    list: INote[]
 }
 
 
 
 export interface IListSigns {
     list: INote[]
+}
+
+
+
+export interface IListProps {
+    list: INote[],
+    setLists: (lists: IListSigns) => void;
 }

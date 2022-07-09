@@ -11,30 +11,28 @@ import {
     Tab, 
     TabPanel
 } from '@chakra-ui/react';
-import { IListSigns, INote } from "../types/types";
+import { IListSigns, INote, IListProps  } from "../types/types";
 import {connect} from "react-redux";
 
 
-interface IListProps {
-    list: INote[],
-    setLists: (lists: IListSigns) => void;
-}
 
 const List = (props: IListProps) => {
 
     console.log("New List", props);
+
 
     return (
         <Box>
             <Flex flexWrap={"wrap"} gap={"20px"}>
                 {props.list.map((value, index) => {
                     return <Box key={index.toString()}
-                            w={"50%"}
+                            w={"45%"}
                             border={"2px solid #4c5227"}
+                            p={"15px"}
                         >
                             <Text>{value?.sign}</Text>
                             <Heading fontSize={"24px"}>Запись №: {index + 1}</Heading>
-                            <Text>{value?.date?.timezone}</Text>
+                            <Text>{value?.date?.datetime}</Text>
                             <Text>{value?.text}</Text>
                     </Box>
                 })}
@@ -43,13 +41,11 @@ const List = (props: IListProps) => {
     );
 }
 
-// interface MapState {
-//     listReducer: IListSigns,
-//     timeZoneReducer: IListSigns
-// }
 
 
 function mapStateToProps(state){
+
+    console.log("ListState", state)
     
     if (state.timeZoneReducer.list) {
         console.log("0", state.timeZoneReducer.list[0]);
@@ -58,11 +54,11 @@ function mapStateToProps(state){
         }
     }
     else {
+        console.log("1", state.timeZoneReducer.data);
         return {
-            list: [...state.listReducer.list]
+            list: [...state.listReducer.list, state.timeZoneReducer.data]
         }
     }
-    // console.log("State", state.timeZoneReducer.list);
 }
 
 

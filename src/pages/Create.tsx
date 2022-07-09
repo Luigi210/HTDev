@@ -13,11 +13,13 @@ import {
     Input, 
     Textarea,
     Select,
-    Button
+    Button,
+    useToast 
 } from '@chakra-ui/react';
 import {connect} from "react-redux";
 import { API } from "../utils/const";
 import { INote, ICountryTime, ITimeZone, IProps } from "../types/types";
+import { getFromLocalStorage } from "../utils/functions";
 
 
 
@@ -27,7 +29,9 @@ const Create = (props: IProps) => {
     const [timeZones, setTimeZones] = useState([]);
 
     const [countryObject, setCountryObject] = useState<ICountryTime>();
+    const [isActiveButton, setActiveButton] = useState<boolean>(false);
 
+    const toast = useToast();
     // console.log("Props", props);
 
     async function getTimeZone(){
@@ -48,16 +52,18 @@ const Create = (props: IProps) => {
     }
 
     useEffect( () => {
+        const res: ITimeZone = getFromLocalStorage("dataNlist");
+        if(res) {
+            props.setTime({...res});
+        }
         getTimeZone();
     }, []);
 
     useEffect(() => {
 
         if (props.data.tz !== '') {
-            getTimeZoneObject();
-            
+            getTimeZoneObject();   
         }
-
     }, [props.data.tz]);
 
     useEffect(() => {
@@ -76,12 +82,49 @@ const Create = (props: IProps) => {
                 }
             }
         );
+        
     };
 
+    useEffect(() => {
+
+        
+        const timeOut = setTimeout(() => {
+            if (isActiveButton) {
+                setActiveButton(false);
+            }
+        }, 2500);
+
+
+        return () => {
+            clearTimeout(timeOut);
+        }
+    }, [isActiveButton]);
+
+
     const submitSign = () => {
-        if (props.data) {
-            
+        setActiveButton(true);
+        if (props.data.text !== '' && props.data.sign !== '' && props.data.tz !== '' && props.data.date) {
             props.setList(props.data);
+            toast(
+                {
+                    title: 'Запись создана.',
+                    description: "Вы успешно создали запись.",
+                    status: 'success',
+                    duration: 4000,
+                    isClosable: true,
+                }
+            )
+        }
+        else {
+            toast(
+                {
+                    title: 'Валидация не прошла',
+                    description: "Вам стоит заполнить все поля",
+                    status: 'error',
+                    duration: 4000,
+                    isClosable: true,
+                }
+            )
         }
     }
 
@@ -96,6 +139,7 @@ const Create = (props: IProps) => {
                         placeholder={"Запись"} 
                         name="text"
                         onChange={(e) => handleChange(e)}    
+                        defaultValue={props.data.text}
                     />
                 </Box>
 
@@ -104,13 +148,15 @@ const Create = (props: IProps) => {
                         width={"65%"} 
                         placeholder={"Подпись"} 
                         name="sign"
-                        onChange={(e) => handleChange(e)}        
+                        onChange={(e) => handleChange(e)}    
+                        defaultValue={props.data.sign}    
                     />
                     <Select 
                         width={"35%"} 
                         placeholder={"Точное время"} 
                         name="tz"
                         onChange={(e) => handleChange(e)}
+                        value={props.data.tz}
                     >
                         {timeZones.map((item, index) => {
                             return <option key={index} value={item}>{item}</option>
@@ -124,7 +170,14 @@ const Create = (props: IProps) => {
                 justifyContent={"end"}
                 
             >
-                <Button minW={"150px"} bg={"blue.400"} color={"#fff"} onClick={submitSign}>
+                <Button 
+                    minW={"150px"} 
+                    bg={"blue.400"} 
+                    color={"#fff"} 
+                    onClick={submitSign}
+                    isLoading={isActiveButton}
+                    loadingText='Отправляется'
+                >
                     Отправить
                 </Button>
             </Flex>
@@ -137,14 +190,15 @@ const Create = (props: IProps) => {
 
 function mapStateToProps(state){
     
-    // console.log("Cre", state);
+    console.log("Cre", state);
     return {
         data: {
             tz: state.timeZoneReducer.data.tz,
             text: state.timeZoneReducer.data.text,
             sign: state.timeZoneReducer.data.sign,
             date: state.timeZoneReducer.data.date
-        }
+        },
+        list: state.timeZoneReducer.list
     }
 }
 
