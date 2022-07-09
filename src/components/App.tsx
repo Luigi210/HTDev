@@ -16,10 +16,6 @@ import Create from "../pages/Create";
 import List from "../pages/List";
 
 
-interface IApp {
-    id: string;
-}
-
 const App = () => {
 
     return (

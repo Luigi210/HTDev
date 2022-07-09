@@ -6,9 +6,10 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from 'react-redux';
 import {createStore} from "redux";
 import {timeZoneReducer} from "./redux/create";
+import {reducer} from "./redux/reducers";
 
 
-const store = createStore(timeZoneReducer);
+const store = createStore(reducer);
 
 ReactDOM.render(
     <Provider store={store}>

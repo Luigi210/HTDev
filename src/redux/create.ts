@@ -1,5 +1,6 @@
 import { INote } from "../types/types";
 import { ITimeZone } from "../types/types";
+import { listData } from "./list";
 
 const timeZone: ITimeZone = {
     data: {
@@ -28,6 +29,11 @@ export function timeZoneReducer(state=timeZone, action: TimeZoneAction) {
                 }
             }
     
+        case "SET_LIST_FROM_CREATE":
+            return {
+                list: [...listData.list, state.data]
+            }
+
         default:
             return state
     }

@@ -17,15 +17,18 @@ import {
 } from '@chakra-ui/react';
 import {connect} from "react-redux";
 import { API } from "../utils/const";
-import { INote, ICountryTime, ITimeZone } from "../types/types";
+import { INote, ICountryTime, ITimeZone, IProps } from "../types/types";
 
-const Create = (props) => {
+
+
+
+const Create = (props: IProps) => {
 
     const [timeZones, setTimeZones] = useState([]);
 
     const [countryObject, setCountryObject] = useState<ICountryTime>();
 
-    console.log("Props", props);
+    // console.log("Props", props);
 
     async function getTimeZone(){
 
@@ -60,7 +63,6 @@ const Create = (props) => {
     useEffect(() => {
 
         if(countryObject){
-            console.log(countryObject);
             props.setTime({data: {...props.data, date: countryObject!}});
         }
     }, [countryObject]);
@@ -77,7 +79,10 @@ const Create = (props) => {
     };
 
     const submitSign = () => {
-
+        if (props.data) {
+            
+            props.setList(props.data);
+        }
     }
 
 
@@ -119,7 +124,7 @@ const Create = (props) => {
                 justifyContent={"end"}
                 
             >
-                <Button minW={"150px"} bg={"blue.400"} color={"#fff"}>
+                <Button minW={"150px"} bg={"blue.400"} color={"#fff"} onClick={submitSign}>
                     Отправить
                 </Button>
             </Flex>
@@ -130,15 +135,15 @@ const Create = (props) => {
 }
 
 
-function mapStateToProps(state: ITimeZone){
+function mapStateToProps(state){
     
-
+    // console.log("Cre", state);
     return {
         data: {
-            tz: state.data.tz,
-            text: state.data.text,
-            sign: state.data.sign,
-            date: state.data.date
+            tz: state.timeZoneReducer.data.tz,
+            text: state.timeZoneReducer.data.text,
+            sign: state.timeZoneReducer.data.sign,
+            date: state.timeZoneReducer.data.date
         }
     }
 }
@@ -148,6 +153,7 @@ function mapStateToProps(state: ITimeZone){
 function mapDispatchToProps(dispatch){
     return {
         setTime: (state: ITimeZone) => dispatch({type: 'SET', value: state}),
+        setList: (state: ITimeZone) => dispatch({type: "SET_LIST_FROM_CREATE", value: state}),
     }
 }
 
